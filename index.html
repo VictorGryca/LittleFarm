@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm with Moving Cow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="farm">
+        <div class="sky">
+            <div class="cloud cloud1"></div>
+            <div class="cloud cloud2"></div>
+            <div class="cloud cloud3"></div>
+            <div class="cloud cloud4"></div>
+        </div>
+        <img src="/assets/fazendasemfundo.png" alt="Farmhouse" class="farmhouse-img">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: -250px;">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: -130px; transform: scaleX(-1);">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: -10px;">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 110px; transform: scaleX(-1);">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 230px;">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 350px; transform: scaleX(-1);">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 470px;">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 590px; transform: scaleX(-1);">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 710px;">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 830px; transform: scaleX(-1);">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 950px;">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 1070px; transform: scaleX(-1);">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 1190px;">
+        <img src="/assets/cerca.jpg" alt="Fence" class="fence-img" style="left: 1310px; transform: scaleX(-1);">
+        <div class="tree" style="right: 15vw;"><div class="tree-trunk"></div><div class="tree-leaves"></div><div class="apple"></div></div>
+        <div class="tree" style="right: 10vw;"><div class="tree-trunk"></div><div class="tree-leaves"></div><div class="apple"></div></div>
+        <div class="tree" style="right: 5vw;"><div class="tree-trunk"></div><div class="tree-leaves"></div><div class="apple"></div></div>
+        <div class="grass"></div>
+        <img src="/assets/cow.webp" alt="Cow" class="cow" id="cow">
+    </div>
+    <script>
+        let cow = document.getElementById('cow');
+        let position = 0;
+        let direction = 1;
+        let isSpinning = false;
+        let spinStart = null;
+        function moveCow(ts) {
+            position += direction * 4;
+            if (position > window.innerWidth - 150) direction = -1;
+            if (position < 0) direction = 1;
+            cow.style.left = position + 'px';
+            if (!isSpinning && position > window.innerWidth / 2 - 75 && position < window.innerWidth / 2 + 75) {
+                isSpinning = true;
+                spinStart = ts;
+                cow.style.transition = 'transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55), left 0.1s linear';
+                cow.style.transform += ' rotate(360deg)';
+            }
+            if (isSpinning) {
+                if (ts - spinStart >= 1000) {
+                    cow.style.transition = 'left 0.1s linear, transform 0.2s';
+                    cow.style.transform = direction === 1 ? 'scaleX(-1)' : 'scaleX(1)';
+                    isSpinning = false;
+                }
+            }
+            if (!isSpinning) {
+                if (direction === 1) {
+                    cow.classList.add('flip');
+                } else {
+                    cow.classList.remove('flip');
+                }
+            }
+            requestAnimationFrame(moveCow);
+        }
+        moveCow();
+    </script>
+</body>
+</html>
